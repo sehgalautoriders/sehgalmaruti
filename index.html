@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sehgal Autoriders - Maruti Suzuki Division</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+  :root { --blue:#1a3c6e; --lightblue:#eaf1fa; --border:#c9d4e3; --green:#1e7d32; --red:#b23b3b; }
+  body { background:#f4f6f9; color:#222; }
+  header { background:var(--blue); color:#fff; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  header h1 { font-size:1.15rem; font-weight:600; }
+  header .viewer { font-size:.85rem; }
+  header select { padding:4px 8px; border-radius:4px; border:none; font-size:.85rem; }
+  nav { background:#fff; border-bottom:2px solid var(--border); display:flex; }
+  nav button { flex:1; padding:12px; border:none; background:none; font-size:.95rem; cursor:pointer; border-bottom:3px solid transparent; }
+  nav button.active { border-bottom-color:var(--blue); color:var(--blue); font-weight:600; }
+  .layout { display:flex; min-height:calc(100vh - 110px); }
+  aside { width:190px; background:#fff; border-right:1px solid var(--border); padding:10px 0; overflow-y:auto; }
+  aside h3 { font-size:.75rem; text-transform:uppercase; color:#777; padding:4px 14px; }
+  aside button { display:block; width:100%; text-align:left; padding:10px 14px; border:none; background:none; cursor:pointer; font-size:.92rem; border-left:4px solid transparent; }
+  aside button.sel { background:var(--lightblue); border-left-color:var(--blue); font-weight:600; }
+  main { flex:1; padding:18px; overflow-x:auto; }
+  .card { background:#fff; border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:16px; }
+  .card h2 { font-size:1.05rem; color:var(--blue); margin-bottom:10px; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th, td { border:1px solid var(--border); padding:7px 9px; text-align:center; }
+  th { background:var(--lightblue); }
+  .row-flex { display:flex; gap:14px; flex-wrap:wrap; align-items:end; margin-bottom:12px; }
+  .field label { display:block; font-size:.78rem; color:#555; margin-bottom:3px; }
+  .field input { padding:8px; border:1px solid var(--border); border-radius:5px; font-size:.95rem; width:150px; }
+  .big { font-size:1.5rem; font-weight:700; color:var(--green); }
+  .btn { background:var(--blue); color:#fff; border:none; padding:9px 16px; border-radius:5px; cursor:pointer; font-size:.92rem; }
+  .btn:active { opacity:.85; }
+  .note { font-size:.78rem; color:#856404; background:#fff8e1; border:1px solid #ffe9a8; padding:8px 10px; border-radius:5px; margin-top:10px; }
+  .pill { display:inline-block; padding:2px 10px; border-radius:12px; font-size:.75rem; background:var(--lightblue); color:var(--blue); margin-left:6px; }
+  .stat-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+  .stat { background:#fff; border:1px solid var(--border); border-radius:8px; padding:12px 18px; min-width:150px; }
+  .stat .v { font-size:1.25rem; font-weight:700; color:var(--blue); }
+  .stat .l { font-size:.78rem; color:#666; }
+  @media (max-width:700px){ .layout{flex-direction:column;} aside{width:100%; display:flex; overflow-x:auto;} aside h3{display:none;} aside button{white-space:nowrap; border-left:none; border-bottom:3px solid transparent;} aside button.sel{border-bottom-color:var(--blue);} }
+</style>
+</head>
+<body>
+<header>
+  <h1>SEHGAL AUTORIDERS &mdash; MARUTI SUZUKI DIVISION</h1>
+  <div class="viewer">Viewing as:
+    <select id="viewer">
+      <option>Ravi Pimperkar</option>
+      <option>Yogesh Patil</option>
+      <option>Satish Ainapure (Finance)</option>
+    </select>
+  </div>
+</header>
+<nav>
+  <button id="tabD" class="active" onclick="showTab('drivers')">DRIVER KM &amp; ALLOWANCE</button>
+  <button id="tabG" onclick="showTab('gate')">GATE-OUT REGISTER</button>
+</nav>
+
+<div class="layout" id="driversView">
+  <aside id="driverList"><h3>Drivers</h3></aside>
+  <main>
+    <div class="stat-row">
+      <div class="stat"><div class="v" id="stKm">0</div><div class="l">Total km this month</div></div>
+      <div class="stat"><div class="v" id="stTrips">0</div><div class="l">Trips logged</div></div>
+      <div class="stat"><div class="v" id="stAmt">Rs 0</div><div class="l">Allowance payable</div></div>
+    </div>
+    <div class="card">
+      <h2 id="drvTitle">Driver 1 <span class="pill">Mobile app tracked</span></h2>
+      <div class="row-flex">
+        <div class="field">
+          <label>Rate per km (Rs) &mdash; set by management, applies to all drivers</label>
+          <input type="number" id="rate" min="0" step="0.5" value="4">
+        </div>
+        <button class="btn" onclick="saveRate()">Save rate</button>
+      </div>
+      <table id="tripTable">
+        <thead><tr><th>Date</th><th>From</th><th>To</th><th>KM (GPS)</th><th>Purpose</th><th>Amount (km &times; rate)</th></tr></thead>
+        <tbody></tbody>
+        <tfoot><tr><th colspan="3">TOTAL</th><th id="ftKm">0</th><th></th><th id="ftAmt">Rs 0</th></tr></tfoot>
+      </table>
+      <div class="note"><b>How it works when live:</b> each driver installs the tracking app on his mobile. The app records every trip's GPS distance automatically. What you see here is DEMO data. The rate you enter above is the only manual input &mdash; a Rs 50 run can no longer be claimed as Rs 500, because the kilometres come from the phone, not from the voucher.</div>
+    </div>
+  </main>
+</div>
+
+<div class="layout" id="gateView" style="display:none">
+  <main>
+    <div class="card">
+      <h2>GATE-OUT ENTRY (Guard screen)</h2>
+      <div class="row-flex">
+        <div class="field"><label>Gate pass no. (scan)</label><input id="gp" placeholder="GP-000123"></div>
+        <div class="field"><label>Vehicle Reg No. (scan)</label><input id="reg" placeholder="MH12AB1234"></div>
+        <div class="field"><label>Job Card / Reason</label><input id="jc" placeholder="JC26001234 or Delivery"></div>
+        <button class="btn" onclick="gateOut()">RECORD EXIT</button>
+      </div>
+      <div class="note"><b>When live:</b> the guard scans the gate pass barcode and the number plate camera fills the Reg No automatically. Every exit is stamped with date-time and stored centrally. Finance (Satish) sees every vehicle that left, matched later against DMS job cards &mdash; a vehicle that left without a JC shows up in red the same day.</div>
+    </div>
+    <div class="card">
+      <h2>EXIT LOG <span class="pill" id="gateViewer">Finance view</span></h2>
+      <table id="gateTable">
+        <thead><tr><th>#</th><th>Date-Time</th><th>Gate Pass</th><th>Reg No</th><th>JC / Reason</th><th>Recorded by</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+const DRIVERS = 12;
+let cur = 1;
+// deterministic demo trips per driver
+function demoTrips(d){
+  const routes=[["Bavdhan WS","Manjari WS"],["Bavdhan WS","RTO Pune"],["Manjari WS","Customer - Hadapsar"],["LC Road","Stockyard"],["Bavdhan WS","Lonavala WS"],["Kamshet","Khed Shivapur"],["Bavdhan WS","Customer - Baner"],["Manjari WS","MSIL Depot"]];
+  const t=[]; const n=4+(d*3)%5;
+  for(let i=0;i<n;i++){
+    const r=routes[(d+i)%routes.length];
+    const km=(6+((d*7+i*13)%38));
+    t.push({date:"2026-08-"+String(3+i*3).padStart(2,"0"), from:r[0], to:r[1], km:km, why:i%3==0?"Vehicle delivery":(i%3==1?"Pickup":"Spares run")});
+  }
+  return t;
+}
+function el(t,h){const e=document.createElement(t); e.innerHTML=h; return e;}
+function renderList(){
+  const a=document.getElementById("driverList");
+  for(let i=1;i<=DRIVERS;i++){
+    const b=el("button","Driver "+i); b.id="drv"+i;
+    b.onclick=()=>{cur=i; renderDriver();};
+    a.appendChild(b);
+  }
+}
+function saveRate(){ localStorage.setItem("kmRate", document.getElementById("rate").value); renderDriver(); }
+function renderDriver(){
+  document.querySelectorAll("aside button").forEach(b=>b.classList.remove("sel"));
+  document.getElementById("drv"+cur).classList.add("sel");
+  document.getElementById("drvTitle").innerHTML="Driver "+cur+' <span class="pill">Mobile app tracked</span>';
+  const rate=parseFloat(localStorage.getItem("kmRate")||document.getElementById("rate").value)||0;
+  document.getElementById("rate").value=rate;
+  const tb=document.querySelector("#tripTable tbody"); tb.innerHTML="";
+  let km=0;
+  const trips=demoTrips(cur);
+  trips.forEach(t=>{
+    km+=t.km;
+    tb.appendChild(el("tr","<td>"+t.date+"</td><td>"+t.from+"</td><td>"+t.to+"</td><td>"+t.km+"</td><td>"+t.why+"</td><td>Rs "+(t.km*rate).toFixed(0)+"</td>"));
+  });
+  document.getElementById("ftKm").textContent=km;
+  document.getElementById("ftAmt").textContent="Rs "+(km*rate).toFixed(0);
+  document.getElementById("stKm").textContent=km;
+  document.getElementById("stTrips").textContent=trips.length;
+  document.getElementById("stAmt").textContent="Rs "+(km*rate).toFixed(0);
+}
+function showTab(t){
+  document.getElementById("driversView").style.display = t==="drivers"?"flex":"none";
+  document.getElementById("gateView").style.display = t==="gate"?"flex":"none";
+  document.getElementById("tabD").classList.toggle("active", t==="drivers");
+  document.getElementById("tabG").classList.toggle("active", t==="gate");
+}
+function gateOut(){
+  const gp=document.getElementById("gp").value.trim(), reg=document.getElementById("reg").value.trim().toUpperCase(), jc=document.getElementById("jc").value.trim();
+  if(!gp||!reg){ alert("Gate pass and Reg No are required"); return; }
+  const log=JSON.parse(localStorage.getItem("gateLog")||"[]");
+  log.unshift({dt:new Date().toLocaleString("en-IN"), gp:gp, reg:reg, jc:jc||"-", by:document.getElementById("viewer").value});
+  localStorage.setItem("gateLog", JSON.stringify(log.slice(0,200)));
+  document.getElementById("gp").value=""; document.getElementById("reg").value=""; document.getElementById("jc").value="";
+  renderGate();
+}
+function renderGate(){
+  const log=JSON.parse(localStorage.getItem("gateLog")||"[]");
+  const tb=document.querySelector("#gateTable tbody"); tb.innerHTML="";
+  log.forEach((x,i)=>tb.appendChild(el("tr","<td>"+(i+1)+"</td><td>"+x.dt+"</td><td>"+x.gp+"</td><td>"+x.reg+"</td><td>"+x.jc+"</td><td>"+x.by+"</td>")));
+}
+renderList(); renderDriver(); renderGate();
+</script>
+</body>
+</html>
