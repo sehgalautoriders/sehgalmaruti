@@ -5,56 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sehgal Autoriders - Maruti Suzuki Division</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-  :root { --blue:#1a3c6e; --lightblue:#eaf1fa; --border:#c9d4e3; --green:#1e7d32; --red:#b23b3b; }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Arial, sans-serif; }
+  :root { --blue:#1a3c6e; --lightblue:#eaf1fa; --border:#c9d4e3; --green:#1e7d32; --red:#b23b3b; --amber:#b8860b; }
   body { background:#f4f6f9; color:#222; }
   header { background:var(--blue); color:#fff; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-  header h1 { font-size:1.15rem; font-weight:600; }
-  header .viewer { font-size:.85rem; }
+  header h1 { font-size:1.1rem; font-weight:600; }
   header select { padding:4px 8px; border-radius:4px; border:none; font-size:.85rem; }
   nav { background:#fff; border-bottom:2px solid var(--border); display:flex; }
   nav button { flex:1; padding:12px; border:none; background:none; font-size:.95rem; cursor:pointer; border-bottom:3px solid transparent; }
   nav button.active { border-bottom-color:var(--blue); color:var(--blue); font-weight:600; }
   .layout { display:flex; min-height:calc(100vh - 110px); }
-  aside { width:190px; background:#fff; border-right:1px solid var(--border); padding:10px 0; overflow-y:auto; }
-  aside h3 { font-size:.75rem; text-transform:uppercase; color:#777; padding:4px 14px; }
-  aside button { display:block; width:100%; text-align:left; padding:10px 14px; border:none; background:none; cursor:pointer; font-size:.92rem; border-left:4px solid transparent; }
+  aside { width:180px; background:#fff; border-right:1px solid var(--border); padding:10px 0; overflow-y:auto; }
+  aside h3 { font-size:.72rem; text-transform:uppercase; color:#777; padding:4px 14px; }
+  aside button { display:block; width:100%; text-align:left; padding:10px 14px; border:none; background:none; cursor:pointer; font-size:.9rem; border-left:4px solid transparent; }
   aside button.sel { background:var(--lightblue); border-left-color:var(--blue); font-weight:600; }
   main { flex:1; padding:18px; overflow-x:auto; }
   .card { background:#fff; border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:16px; }
-  .card h2 { font-size:1.05rem; color:var(--blue); margin-bottom:10px; }
-  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  .card h2 { font-size:1.02rem; color:var(--blue); margin-bottom:10px; }
+  table { width:100%; border-collapse:collapse; font-size:.88rem; }
   th, td { border:1px solid var(--border); padding:7px 9px; text-align:center; }
   th { background:var(--lightblue); }
   .row-flex { display:flex; gap:14px; flex-wrap:wrap; align-items:end; margin-bottom:12px; }
-  .field label { display:block; font-size:.78rem; color:#555; margin-bottom:3px; }
-  .field input { padding:8px; border:1px solid var(--border); border-radius:5px; font-size:.95rem; width:150px; }
-  .big { font-size:1.5rem; font-weight:700; color:var(--green); }
+  .field label { display:block; font-size:.76rem; color:#555; margin-bottom:3px; }
+  .field input { padding:8px; border:1px solid var(--border); border-radius:5px; font-size:.95rem; width:160px; }
   .btn { background:var(--blue); color:#fff; border:none; padding:9px 16px; border-radius:5px; cursor:pointer; font-size:.92rem; }
-  .btn:active { opacity:.85; }
+  .btn.alt { background:#fff; color:var(--blue); border:1px solid var(--blue); }
   .note { font-size:.78rem; color:#856404; background:#fff8e1; border:1px solid #ffe9a8; padding:8px 10px; border-radius:5px; margin-top:10px; }
-  .pill { display:inline-block; padding:2px 10px; border-radius:12px; font-size:.75rem; background:var(--lightblue); color:var(--blue); margin-left:6px; }
+  .pill { display:inline-block; padding:2px 10px; border-radius:12px; font-size:.72rem; background:var(--lightblue); color:var(--blue); margin-left:6px; }
   .stat-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
   .stat { background:#fff; border:1px solid var(--border); border-radius:8px; padding:12px 18px; min-width:150px; }
   .stat .v { font-size:1.25rem; font-weight:700; color:var(--blue); }
-  .stat .l { font-size:.78rem; color:#666; }
+  .stat .l { font-size:.76rem; color:#666; }
+  /* OCR cascade */
+  .ocr-tree { display:flex; flex-direction:column; gap:8px; margin:12px 0; }
+  .engine { display:flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid var(--border); border-radius:6px; background:#fafcff; font-size:.9rem; }
+  .engine .dot { width:12px; height:12px; border-radius:50%; background:#ccc; flex-shrink:0; }
+  .engine.trying .dot { background:var(--amber); animation:pulse 1s infinite; }
+  .engine.ok .dot { background:var(--green); }
+  .engine.fail .dot { background:var(--red); }
+  .engine .arrow { color:#999; font-size:.8rem; }
+  .engine small { color:#888; margin-left:auto; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.35;} }
+  .scanbox { border:2px dashed var(--border); border-radius:8px; padding:26px; text-align:center; color:#666; cursor:pointer; background:#fbfdff; }
+  .scanbox:hover { border-color:var(--blue); }
   @media (max-width:700px){ .layout{flex-direction:column;} aside{width:100%; display:flex; overflow-x:auto;} aside h3{display:none;} aside button{white-space:nowrap; border-left:none; border-bottom:3px solid transparent;} aside button.sel{border-bottom-color:var(--blue);} }
 </style>
 </head>
 <body>
 <header>
   <h1>SEHGAL AUTORIDERS &mdash; MARUTI SUZUKI DIVISION</h1>
-  <div class="viewer">Viewing as:
+  <div>Viewing as:
     <select id="viewer">
-      <option>Ravi Pimperkar</option>
-      <option>Yogesh Patil</option>
-      <option>Satish Ainapure (Finance)</option>
+      <option>Ravi Pimperkar</option><option>Yogesh Patil</option><option>Satish Ainapure (Finance)</option><option>Gate Guard</option>
     </select>
   </div>
 </header>
 <nav>
   <button id="tabD" class="active" onclick="showTab('drivers')">DRIVER KM &amp; ALLOWANCE</button>
-  <button id="tabG" onclick="showTab('gate')">GATE-OUT REGISTER</button>
+  <button id="tabG" onclick="showTab('gate')">GATE-OUT (OCR)</button>
 </nav>
 
 <div class="layout" id="driversView">
@@ -66,20 +74,17 @@
       <div class="stat"><div class="v" id="stAmt">Rs 0</div><div class="l">Allowance payable</div></div>
     </div>
     <div class="card">
-      <h2 id="drvTitle">Driver 1 <span class="pill">Mobile app tracked</span></h2>
+      <h2 id="drvTitle">Driver 1 <span class="pill">Mobile GPS tracked</span></h2>
       <div class="row-flex">
-        <div class="field">
-          <label>Rate per km (Rs) &mdash; set by management, applies to all drivers</label>
-          <input type="number" id="rate" min="0" step="0.5" value="4">
-        </div>
+        <div class="field"><label>Rate per km (Rs) &mdash; management-set, all drivers</label><input type="number" id="rate" min="0" step="0.5" value="4"></div>
         <button class="btn" onclick="saveRate()">Save rate</button>
       </div>
       <table id="tripTable">
-        <thead><tr><th>Date</th><th>From</th><th>To</th><th>KM (GPS)</th><th>Purpose</th><th>Amount (km &times; rate)</th></tr></thead>
+        <thead><tr><th>Date</th><th>From</th><th>To</th><th>KM (GPS)</th><th>Purpose</th><th>Amount</th></tr></thead>
         <tbody></tbody>
         <tfoot><tr><th colspan="3">TOTAL</th><th id="ftKm">0</th><th></th><th id="ftAmt">Rs 0</th></tr></tfoot>
       </table>
-      <div class="note"><b>How it works when live:</b> each driver installs the tracking app on his mobile. The app records every trip's GPS distance automatically. What you see here is DEMO data. The rate you enter above is the only manual input &mdash; a Rs 50 run can no longer be claimed as Rs 500, because the kilometres come from the phone, not from the voucher.</div>
+      <div class="note"><b>Live:</b> the driver's phone app records each trip's GPS distance. A Rs 50 run cannot be claimed as Rs 500 &mdash; the km come from the phone, not the voucher. Rate is the only manual input. Visible to Ravi, Yogesh and Satish.</div>
     </div>
   </main>
 </div>
@@ -87,19 +92,30 @@
 <div class="layout" id="gateView" style="display:none">
   <main>
     <div class="card">
-      <h2>GATE-OUT ENTRY (Guard screen)</h2>
+      <h2>GATE-OUT SCAN (Guard screen)</h2>
+      <div class="scanbox" onclick="document.getElementById('photo').click()">
+        Tap to photograph the gate pass + number plate<br><small>(camera on the guard's tablet)</small>
+      </div>
+      <input type="file" id="photo" accept="image/*" capture="environment" style="display:none" onchange="runOCR()">
+      <div class="ocr-tree" id="ocrTree">
+        <div class="engine" id="eng0"><span class="dot"></span> 1. Google <b>Gemini</b> vision <span class="arrow">(primary reader)</span><small>waiting</small></div>
+        <div class="engine" id="eng1"><span class="dot"></span> 2. Google <b>Cloud Vision API</b> <span class="arrow">(fallback if Gemini fails)</span><small>waiting</small></div>
+        <div class="engine" id="eng2"><span class="dot"></span> 3. On-device <b>Document Scanner</b> OCR <span class="arrow">(final fallback, offline)</span><small>waiting</small></div>
+        <div class="engine" id="eng3"><span class="dot"></span> 4. <b>Manual entry</b> <span class="arrow">(guard types it)</span><small>always available</small></div>
+      </div>
       <div class="row-flex">
-        <div class="field"><label>Gate pass no. (scan)</label><input id="gp" placeholder="GP-000123"></div>
-        <div class="field"><label>Vehicle Reg No. (scan)</label><input id="reg" placeholder="MH12AB1234"></div>
+        <div class="field"><label>Gate pass no.</label><input id="gp" placeholder="GP-000123"></div>
+        <div class="field"><label>Vehicle Reg No.</label><input id="reg" placeholder="MH12AB1234"></div>
         <div class="field"><label>Job Card / Reason</label><input id="jc" placeholder="JC26001234 or Delivery"></div>
         <button class="btn" onclick="gateOut()">RECORD EXIT</button>
       </div>
-      <div class="note"><b>When live:</b> the guard scans the gate pass barcode and the number plate camera fills the Reg No automatically. Every exit is stamped with date-time and stored centrally. Finance (Satish) sees every vehicle that left, matched later against DMS job cards &mdash; a vehicle that left without a JC shows up in red the same day.</div>
+      <div class="note"><b>OCR engine tree (as specified):</b> each photo is read by <b>Gemini</b> first; if it cannot read the plate/pass it falls to <b>Google Cloud Vision</b>; if that also fails (poor light, no network) the <b>on-device document scanner</b> reads it offline; the guard can always correct or type manually. Backend deployable on <b>Azure</b> or <b>AWS</b>. This page simulates the cascade &mdash; wire real API keys in the backend (endpoints are stubbed in the code as <code>OCR.endpoints</code>).</div>
     </div>
     <div class="card">
-      <h2>EXIT LOG <span class="pill" id="gateViewer">Finance view</span></h2>
+      <h2>EXIT LOG <span class="pill">Finance (Satish) view</span></h2>
+      <p style="font-size:.82rem;color:#555;margin-bottom:8px">Every exit is matched later against DMS job cards. A vehicle that left with no JC shows in <b style="color:var(--red)">red</b> &mdash; that is the un-billed-exit leak your camera-OCR gate closes.</p>
       <table id="gateTable">
-        <thead><tr><th>#</th><th>Date-Time</th><th>Gate Pass</th><th>Reg No</th><th>JC / Reason</th><th>Recorded by</th></tr></thead>
+        <thead><tr><th>#</th><th>Date-Time</th><th>Gate Pass</th><th>Reg No</th><th>JC / Reason</th><th>Read by</th><th>Guard</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -107,68 +123,44 @@
 </div>
 
 <script>
-const DRIVERS = 12;
-let cur = 1;
-// deterministic demo trips per driver
-function demoTrips(d){
-  const routes=[["Bavdhan WS","Manjari WS"],["Bavdhan WS","RTO Pune"],["Manjari WS","Customer - Hadapsar"],["LC Road","Stockyard"],["Bavdhan WS","Lonavala WS"],["Kamshet","Khed Shivapur"],["Bavdhan WS","Customer - Baner"],["Manjari WS","MSIL Depot"]];
-  const t=[]; const n=4+(d*3)%5;
-  for(let i=0;i<n;i++){
-    const r=routes[(d+i)%routes.length];
-    const km=(6+((d*7+i*13)%38));
-    t.push({date:"2026-08-"+String(3+i*3).padStart(2,"0"), from:r[0], to:r[1], km:km, why:i%3==0?"Vehicle delivery":(i%3==1?"Pickup":"Spares run")});
+// ---- OCR cascade (stub: replace endpoints with real backend that holds the API keys) ----
+const OCR = {
+  endpoints: { gemini:"/api/ocr/gemini", cloudVision:"/api/ocr/cloud-vision", docScanner:"local" },
+  // demo: deterministically decide which engine "succeeds" so the cascade is visible
+  async read(seed){
+    const steps=["eng0","eng1","eng2"];
+    let winner = seed % 3; // 0 gemini, 1 vision, 2 scanner
+    for(let i=0;i<steps.length;i++){
+      setEng(steps[i],"trying","reading...");
+      await wait(700);
+      if(i<winner){ setEng(steps[i],"fail","could not read"); }
+      else { setEng(steps[i],"ok","READ OK"); return {engine:["Gemini","Cloud Vision","Doc Scanner"][i], plate:demoPlate(seed), pass:"GP-"+String(1000+seed)}; }
+    }
+    setEng("eng3","ok","type manually"); return {engine:"Manual", plate:"", pass:""};
   }
-  return t;
+};
+function setEng(id,cls,msg){ const e=document.getElementById(id); e.className="engine "+cls; e.querySelector("small").textContent=msg; }
+function resetEng(){ ["eng0","eng1","eng2","eng3"].forEach(id=>setEng(id,"","waiting")); }
+function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function demoPlate(s){ const l="ABCDEFGHJKLMNPQRSTUVWX"; return "MH12"+l[s%22]+l[(s*3)%22]+String(1000+(s*137)%9000); }
+async function runOCR(){
+  resetEng();
+  const seed=Math.floor((Date.now()/1000))%97;
+  const res=await OCR.read(seed);
+  if(res.plate) document.getElementById("reg").value=res.plate;
+  if(res.pass) document.getElementById("gp").value=res.pass;
+  document.getElementById("gp").dataset.engine=res.engine;
 }
+
+const DRIVERS=12; let cur=1;
+function demoTrips(d){ const routes=[["Bavdhan WS","Manjari WS"],["Bavdhan WS","RTO Pune"],["Manjari WS","Cust-Hadapsar"],["LC Road","Stockyard"],["Bavdhan WS","Lonavala WS"],["Kamshet","Khed Shivapur"],["Bavdhan WS","Cust-Baner"],["Manjari WS","MSIL Depot"]]; const t=[]; const n=4+(d*3)%5; for(let i=0;i<n;i++){ const r=routes[(d+i)%routes.length]; t.push({date:"2026-08-"+String(3+i*3).padStart(2,"0"),from:r[0],to:r[1],km:6+((d*7+i*13)%38),why:i%3==0?"Delivery":(i%3==1?"Pickup":"Spares run")}); } return t; }
 function el(t,h){const e=document.createElement(t); e.innerHTML=h; return e;}
-function renderList(){
-  const a=document.getElementById("driverList");
-  for(let i=1;i<=DRIVERS;i++){
-    const b=el("button","Driver "+i); b.id="drv"+i;
-    b.onclick=()=>{cur=i; renderDriver();};
-    a.appendChild(b);
-  }
-}
-function saveRate(){ localStorage.setItem("kmRate", document.getElementById("rate").value); renderDriver(); }
-function renderDriver(){
-  document.querySelectorAll("aside button").forEach(b=>b.classList.remove("sel"));
-  document.getElementById("drv"+cur).classList.add("sel");
-  document.getElementById("drvTitle").innerHTML="Driver "+cur+' <span class="pill">Mobile app tracked</span>';
-  const rate=parseFloat(localStorage.getItem("kmRate")||document.getElementById("rate").value)||0;
-  document.getElementById("rate").value=rate;
-  const tb=document.querySelector("#tripTable tbody"); tb.innerHTML="";
-  let km=0;
-  const trips=demoTrips(cur);
-  trips.forEach(t=>{
-    km+=t.km;
-    tb.appendChild(el("tr","<td>"+t.date+"</td><td>"+t.from+"</td><td>"+t.to+"</td><td>"+t.km+"</td><td>"+t.why+"</td><td>Rs "+(t.km*rate).toFixed(0)+"</td>"));
-  });
-  document.getElementById("ftKm").textContent=km;
-  document.getElementById("ftAmt").textContent="Rs "+(km*rate).toFixed(0);
-  document.getElementById("stKm").textContent=km;
-  document.getElementById("stTrips").textContent=trips.length;
-  document.getElementById("stAmt").textContent="Rs "+(km*rate).toFixed(0);
-}
-function showTab(t){
-  document.getElementById("driversView").style.display = t==="drivers"?"flex":"none";
-  document.getElementById("gateView").style.display = t==="gate"?"flex":"none";
-  document.getElementById("tabD").classList.toggle("active", t==="drivers");
-  document.getElementById("tabG").classList.toggle("active", t==="gate");
-}
-function gateOut(){
-  const gp=document.getElementById("gp").value.trim(), reg=document.getElementById("reg").value.trim().toUpperCase(), jc=document.getElementById("jc").value.trim();
-  if(!gp||!reg){ alert("Gate pass and Reg No are required"); return; }
-  const log=JSON.parse(localStorage.getItem("gateLog")||"[]");
-  log.unshift({dt:new Date().toLocaleString("en-IN"), gp:gp, reg:reg, jc:jc||"-", by:document.getElementById("viewer").value});
-  localStorage.setItem("gateLog", JSON.stringify(log.slice(0,200)));
-  document.getElementById("gp").value=""; document.getElementById("reg").value=""; document.getElementById("jc").value="";
-  renderGate();
-}
-function renderGate(){
-  const log=JSON.parse(localStorage.getItem("gateLog")||"[]");
-  const tb=document.querySelector("#gateTable tbody"); tb.innerHTML="";
-  log.forEach((x,i)=>tb.appendChild(el("tr","<td>"+(i+1)+"</td><td>"+x.dt+"</td><td>"+x.gp+"</td><td>"+x.reg+"</td><td>"+x.jc+"</td><td>"+x.by+"</td>")));
-}
+function renderList(){ const a=document.getElementById("driverList"); for(let i=1;i<=DRIVERS;i++){ const b=el("button","Driver "+i); b.id="drv"+i; b.onclick=()=>{cur=i;renderDriver();}; a.appendChild(b);} }
+function saveRate(){ localStorage.setItem("kmRate",document.getElementById("rate").value); renderDriver(); }
+function renderDriver(){ document.querySelectorAll("aside button").forEach(b=>b.classList.remove("sel")); document.getElementById("drv"+cur).classList.add("sel"); document.getElementById("drvTitle").innerHTML="Driver "+cur+' <span class="pill">Mobile GPS tracked</span>'; const rate=parseFloat(localStorage.getItem("kmRate")||document.getElementById("rate").value)||0; document.getElementById("rate").value=rate; const tb=document.querySelector("#tripTable tbody"); tb.innerHTML=""; let km=0; const trips=demoTrips(cur); trips.forEach(t=>{ km+=t.km; tb.appendChild(el("tr","<td>"+t.date+"</td><td>"+t.from+"</td><td>"+t.to+"</td><td>"+t.km+"</td><td>"+t.why+"</td><td>Rs "+(t.km*rate).toFixed(0)+"</td>")); }); document.getElementById("ftKm").textContent=km; document.getElementById("ftAmt").textContent="Rs "+(km*rate).toFixed(0); document.getElementById("stKm").textContent=km; document.getElementById("stTrips").textContent=trips.length; document.getElementById("stAmt").textContent="Rs "+(km*rate).toFixed(0); }
+function showTab(t){ document.getElementById("driversView").style.display=t==="drivers"?"flex":"none"; document.getElementById("gateView").style.display=t==="gate"?"flex":"none"; document.getElementById("tabD").classList.toggle("active",t==="drivers"); document.getElementById("tabG").classList.toggle("active",t==="gate"); }
+function gateOut(){ const gp=document.getElementById("gp").value.trim(),reg=document.getElementById("reg").value.trim().toUpperCase(),jc=document.getElementById("jc").value.trim(); if(!gp||!reg){alert("Gate pass and Reg No required");return;} const log=JSON.parse(localStorage.getItem("gateLog")||"[]"); log.unshift({dt:new Date().toLocaleString("en-IN"),gp:gp,reg:reg,jc:jc||"-",eng:document.getElementById("gp").dataset.engine||"Manual",by:document.getElementById("viewer").value}); localStorage.setItem("gateLog",JSON.stringify(log.slice(0,200))); document.getElementById("gp").value="";document.getElementById("reg").value="";document.getElementById("jc").value=""; resetEng(); renderGate(); }
+function renderGate(){ const log=JSON.parse(localStorage.getItem("gateLog")||"[]"); const tb=document.querySelector("#gateTable tbody"); tb.innerHTML=""; log.forEach((x,i)=>{ const noJC=(x.jc==="-"||x.jc.toLowerCase()==="delivery"); tb.appendChild(el("tr","<td>"+(i+1)+"</td><td>"+x.dt+"</td><td>"+x.gp+"</td><td>"+x.reg+"</td><td"+(noJC?' style="color:#b23b3b;font-weight:600"':"")+">"+x.jc+"</td><td>"+x.eng+"</td><td>"+x.by+"</td>")); }); }
 renderList(); renderDriver(); renderGate();
 </script>
 </body>
